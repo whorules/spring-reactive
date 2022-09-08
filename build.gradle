@@ -1,0 +1,47 @@
+buildscript {
+	ext {
+		springBootVersion = "2.7.3"
+		springDependencyManagementVersion = "1.0.13.RELEASE"
+		nettyResolverVersion = "4.1.80.Final"
+		wireMockVersion = "wiremock-jre8:2.33.2"
+	}
+}
+
+plugins {
+	id 'org.springframework.boot' version "${springBootVersion}"
+	id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
+	id 'java'
+}
+
+group = 'com.korovko'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation "org.springframework.boot:spring-boot-starter-data-mongodb-reactive"
+	implementation("io.netty:netty-resolver-dns-native-macos:${nettyResolverVersion}") {
+		artifact {
+			classifier = "osx-aarch_64"
+		}
+	}
+	implementation "org.springframework.boot:spring-boot-starter-webflux"
+	compileOnly "org.projectlombok:lombok"
+	annotationProcessor "org.projectlombok:lombok"
+	testImplementation "org.springframework.boot:spring-boot-starter-test"
+	testImplementation "io.projectreactor:reactor-test"
+	testImplementation "com.github.tomakehurst:${wireMockVersion}"
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

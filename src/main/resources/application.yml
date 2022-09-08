@@ -1,0 +1,12 @@
+server:
+  port: 8081
+spring:
+  data:
+    mongodb:
+      uri: "mongodb://root:pwd@localhost:27017"
+      database: "admin"
+clients:
+  order-service:
+    url: "http://localhost:8080/orderSearchService/order/phone"
+  product-service:
+    url: "http://localhost:8082/productInfoService/product/names"
