@@ -29,7 +29,8 @@ public class ExternalServicesRepository {
           return Flux.empty();
         })
         .doOnNext(product -> LoggingUtils.logOnNext(v -> log.info("Received product for product code {}: {}",
-            productCode, product)));
+            productCode, product)))
+        .log();
   }
 
   public Flux<Order> getOrders(final String phoneNumber) {
@@ -42,7 +43,8 @@ public class ExternalServicesRepository {
               "Exception happened after request to order service with user phone number: " + phoneNumber, e);
         })
         .doOnNext(order -> LoggingUtils.logOnNext(v -> log.info("Received order for user with phone number {}: {}",
-            phoneNumber, order)));
+            phoneNumber, order)))
+        .log();
   }
 
   private WebClient.ResponseSpec makeGetRequest(final String apiName, final String paramName, final String paramValue) {

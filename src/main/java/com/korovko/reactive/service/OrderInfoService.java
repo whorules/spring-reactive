@@ -27,11 +27,12 @@ public class OrderInfoService {
         .onErrorMap(e -> logAndReturnException(e, userId))
         .doOnNext(userInfo -> LoggingUtils.logOnNext(v -> log.info("Retrieved phone number {} from user with id {}",
             userInfo.getPhone(), userId)))
-        .flatMapMany(userInfo -> externalServicesRepository.getOrders(userInfo.getPhone()))
-        .flatMap(order -> externalServicesRepository
-            .getProducts(order.getProductCode())
-            .reduce(this::getHighestScoreProduct)
-            .map(product -> this.buildOrderResponse(new UserInfo(), order, product))); // todo finish user info
+        .flatMapMany(userInfo -> externalServicesRepository
+            .getOrders(userInfo.getPhone())
+            .flatMap(order -> externalServicesRepository
+                .getProducts(order.getProductCode())
+                .reduce(this::getHighestScoreProduct)
+                .map(product -> this.buildOrderResponse(userInfo, order, product))));
   }
 
   private Product getHighestScoreProduct(final Product first, final Product second) {
