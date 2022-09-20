@@ -16,6 +16,5 @@ public record ClientConfiguration(OrderService orderService, ProductService prod
   public record OrderService(String url) {}
 
   public record ProductService(String url) {}
+
 }
-
-
